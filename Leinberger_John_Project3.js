@@ -23,9 +23,11 @@ var foodInventory = {
 var walkMore = true;
 var searchForFood = false;
 var foodFound;
+var foodToEat;
 
 //functions
 function jsonHandler (json){
+    
     for(var i = 0; i < json.inventory.length; i++){
         var inventory = json.inventory[i];
         console.log("Food type: " + inventory.food + " Quantity: " + inventory.quantity);
@@ -47,10 +49,12 @@ function keepWalking(confirmWalk) {
     while(keepGo === true){
         counter++;
         distanceLeft = limitWalk - counter;
+        
         if (distanceLeft < 0) {
             console.log("You have walked your limit of " + counter + " miles today, you must rest now.");
             break;
         }
+        
         console.log("You have walked " + counter + " miles today, you can walk another " + distanceLeft + " miles before you rest.");
         keepGo = confirm("You can walk for another " + distanceLeft + " miles, do you want to keep on walking?");
     }
@@ -70,6 +74,7 @@ function searchArea(searchYesNo){
     if (searchYesNo === false) {
         console.log("You decided not to look for any food in the area, as you lay down to rest some you feel a lump under your back, it's a can of " + foodName1 + ".");
         return foodName1;
+    
     }else{
         console.log("You look around the building near you and you stumble upon a can of " + foodName2 + ".");
         return foodName2;
@@ -80,11 +85,31 @@ function searchArea(searchYesNo){
 //updates the json data with the quantity, by sorting through the array of items
 function jsonUpdate(json, foodName){
     for(var i = 0; i < json.inventory.length; i++){
+        
+        //local variables
         var inventory = json.inventory[i];
+        
         if (inventory.food === foodName){
             inventory.quantity += 1;
         }
     }
+};
+
+function pickFood(json){
+    var foodPicked = false;
+    var foodNamePicked;
+    
+    while(foodPicked === false){
+        for(var i = 0; i < json.inventory.length; i++){
+            var inventory = json.inventory[i];
+            foodPicked = confirm("Would you like to eat " + inventory.food + "?");
+            foodNamePicked = inventory.food;
+            if (foodPicked === true) {
+                break;
+            }
+            }
+        }
+    return foodNamePicked;
 };
 
 //main code
@@ -102,4 +127,8 @@ jsonUpdate(foodInventory, foodFound);
 
 //for bug checking only
 jsonHandler(foodInventory);
+
+foodToEat = pickFood(foodInventory);
+
+console.log(foodToEat);
 

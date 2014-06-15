@@ -22,6 +22,7 @@ var foodInventory = {
 
 var walkMore = true;
 var searchForFood = false;
+var foodFound;
 
 //functions
 function jsonHandler (json){
@@ -31,6 +32,9 @@ function jsonHandler (json){
     }
 };
 
+//argument received is a boolean, returns a boolean as well
+//cycles through a loop and asks user if they want to keep walking or until they reach their limit.
+//then asks user if they want to search the next area.
 function keepWalking(confirmWalk) {
     
     //local variables
@@ -55,9 +59,28 @@ function keepWalking(confirmWalk) {
     return lookForFood;
 };
 
+function searchArea(searchYesNo){
+    
+    //local variables
+    var foodName1 = "Canned Tuna";
+    var foodName2 = "Spaghetti & Meatballs";
+    
+    if (searchYesNo === false) {
+        console.log("You decided not to look for any food in the area, as you lay down to rest some you feel a lump under your back, it's a can of " + foodName1 + ".");
+        return foodName1;
+    }else{
+        console.log("You look around the building near you and you stumble upon some cans of " + foodName2 + ".");
+        return foodName2;
+    }
+};
 //main code
 jsonHandler(foodInventory);
 
 walkMore = confirm("Do you want to continue walking down the road?");
 
 searchForFood = keepWalking(walkMore);
+
+foodFound = searchArea(searchForFood);
+
+
+

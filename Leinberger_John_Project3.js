@@ -52,28 +52,44 @@ function keepWalking(confirmWalk) {
             break;
         }
         console.log("You have walked " + counter + " miles today, you can walk another " + distanceLeft + " miles before you rest.");
-        keepGo = confirm("Do you want to keep on walking?");
+        keepGo = confirm("You can walk for another " + distanceLeft + " miles, do you want to keep on walking?");
     }
     
     lookForFood = confirm("Do you want to search the area for food?");
     return lookForFood;
 };
 
+//argument received is a boolean, returns a string
+//simple if else function to determine which food the user will find when they stop for rest.
 function searchArea(searchYesNo){
     
     //local variables
-    var foodName1 = "Canned Tuna";
-    var foodName2 = "Spaghetti & Meatballs";
+    var foodName1 = "Tomato Soup";
+    var foodName2 = "Baked Beans";
     
     if (searchYesNo === false) {
         console.log("You decided not to look for any food in the area, as you lay down to rest some you feel a lump under your back, it's a can of " + foodName1 + ".");
         return foodName1;
     }else{
-        console.log("You look around the building near you and you stumble upon some cans of " + foodName2 + ".");
+        console.log("You look around the building near you and you stumble upon a can of " + foodName2 + ".");
         return foodName2;
     }
 };
+
+//arguments received are json data and a string
+//updates the json data with the quantity, by sorting through the array of items
+function jsonUpdate(json, foodName){
+    for(var i = 0; i < json.inventory.length; i++){
+        var inventory = json.inventory[i];
+        if (inventory.food === foodName){
+            inventory.quantity += 1;
+        }
+    }
+};
+
 //main code
+
+//for bug checking only
 jsonHandler(foodInventory);
 
 walkMore = confirm("Do you want to continue walking down the road?");
@@ -82,5 +98,8 @@ searchForFood = keepWalking(walkMore);
 
 foodFound = searchArea(searchForFood);
 
+jsonUpdate(foodInventory, foodFound);
 
+//for bug checking only
+jsonHandler(foodInventory);
 
